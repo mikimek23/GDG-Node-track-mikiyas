@@ -1,0 +1,25 @@
+{
+  "name": "gdg-node-track",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon task1/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikimek23/GDG-Node-track-mikiyas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/mikimek23/GDG-Node-track-mikiyas/issues"
+  },
+  "homepage": "https://github.com/mikimek23/GDG-Node-track-mikiyas#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
