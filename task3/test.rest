@@ -1,0 +1,30 @@
+### get book
+GET http://localhost:3000/books
+
+### post1
+POST http://localhost:3000/books
+Content-Type: application/json
+
+ {
+    "title": "Aleweledim",
+    "author": "Bealu Girma",
+    "price": 650
+  }
+### post2 
+POST http://localhost:3000/books
+Content-Type: application/json
+
+ {
+    "title": "Fikir Eske Mekaber",
+    "author": "Haddis Alemayehu",
+    "price": 1200 
+  }
+### search
+GET http://localhost:3000/books/search
+
+### get a book
+
+GET http://localhost:3000/books/1
+
+### delete a book
+DELETE http://localhost:3000/books/1
