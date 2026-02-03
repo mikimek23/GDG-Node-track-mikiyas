@@ -1,0 +1,32 @@
+### get all produc
+GET http://localhost:3001/api/v1/products?category=Electronics&minPrice=25.5$maxPrice=100
+
+### product by Id
+GET http://localhost:3001/api/v1/products/6980e2c4bfa619a539107f64
+
+### post Product
+POST http://localhost:3001/api/v1/products
+Content-Type: application/json
+
+{
+    "name": "Wireless Mouse",
+    "description": "Ergonomic 2.4GHz silent optical mouse.",
+    "price": 25.50,
+    "stock": 150,
+    "category": "Electronics",
+    "imageUrl": "https://example.com/mouse.jpg"
+  }
+### update products
+PUT http://localhost:3001/api/v1/products/69819810141cf9e43a5c3bbe
+Content-Type: application/json
+
+{
+    "name": "Wireless Mouse",
+    "description": "Ergonomic 2.4GHz silent optical mouse.",
+    "price": 25.50,
+    "stock": 150,
+    "category": "Electronics",
+    "imageUrl": "https://example.com/mouse.jpg"
+  }
+### delete products
+DELETE http://localhost:3001/api/v1/products/6980e2abbfa619a539107f62
