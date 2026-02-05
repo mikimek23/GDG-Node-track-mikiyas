@@ -1,4 +1,4 @@
-import { productValidation } from '../middlewares/validation.js';
+import { idValidation, productValidation } from '../middlewares/validation.js';
 import {
   createProducts,
   deleteProduct,
@@ -8,11 +8,13 @@ import {
 } from '../services/product.js';
 
 // create product
-export const postProduct = async (req, res) => {
+export const postProduct = async (req, res, next) => {
   const { error } = productValidation.validate(req.body);
 
   if (error) {
-    return res.status(400).json({ message: error.details[0].message });
+    const err = new Error(error.details[0].message);
+    err.statusCode = 400;
+    throw err;
   }
   try {
     const product = await createProducts(req.body);
@@ -22,15 +24,11 @@ export const postProduct = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({
-      message: 'something want wrong! ',
-      success: false,
-    });
+    next(error);
   }
 };
 //get products all product and fileter a product by category and price
-export const getProduct = async (req, res) => {
+export const getProduct = async (req, res, next) => {
   try {
     const { category, minPrice, maxPrice } = req.query;
     const filters = {
@@ -40,34 +38,50 @@ export const getProduct = async (req, res) => {
     };
     const products = await filterProduct(filters);
     if (products.length === 0) {
-      return res.status(404).json({ message: 'Items not found' });
+      const error = new Error('Items not found');
+      error.statusCode = 404;
+      throw error;
     }
     res.status(200).json(products);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error while fetching products', error: error.message });
+    next(error);
   }
 };
 //get product by Id
-export const productById = async (req, res) => {
+export const productById = async (req, res, next) => {
+  const { error } = idValidation.validate(req.params);
+  if (error) {
+    const err = new Error(error.details[0].message);
+    err.statusCode = 400;
+    throw err;
+  }
   try {
     const productId = req.params.id;
     console.log(productId);
     const product = await getProductById(productId);
-    if (!product) return res.status(404).json({ message: 'Item not found' });
+    if (!product) {
+      const error = new Error('Item not found');
+      error.statusCode = 404;
+      throw error;
+    }
     res.status(200).json(product);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error while fetching products', error: error.message });
+    next(error);
   }
 };
 //update proudct
-export const updateProducts = async (req, res) => {
-  const { error } = productValidation.validate(req.body);
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
+export const updateProducts = async (req, res, next) => {
+  const { error: bodyError } = productValidation.validate(req.body);
+  if (bodyError) {
+    const err = new Error(bodyError.details[0].message);
+    err.statusCode = 400;
+    throw err;
+  }
+  const { error: paramsError } = idValidation.validate(req.params);
+  if (paramsError) {
+    const err = new Error(paramsError.details[0].message);
+    err.statusCode = 400;
+    throw err;
   }
   try {
     const data = req.body;
@@ -76,30 +90,30 @@ export const updateProducts = async (req, res) => {
     res
       .status(201)
       .json({ message: 'updated successfully!', preview: updatedProduct });
-  } catch (err) {
-    if (err.message === 'product not found') {
-      return res.status(404).json({ message: err.message });
-    }
-    res
-      .status(500)
-      .json({ message: 'something want wrong!', error: err.message });
+  } catch (error) {
+    next(error);
   }
 };
 // delete product
-export const deleteProducts = async (req, res) => {
+export const deleteProducts = async (req, res, next) => {
+  const { error } = idValidation.validate(req.params);
+  if (error) {
+    const err = new Error(error.details[0].message);
+    err.statusCode = 400;
+    throw err;
+  }
   try {
     const productId = req.params.id;
     const deletedProduct = await deleteProduct(productId);
     if (deletedProduct.deletedCount === 0) {
-      return res.status(404).json({ message: 'Product not found!' });
+      const error = new Error('Product not found!');
+      error.statusCode = 404;
+      throw error;
     }
     res
       .status(200)
       .json({ message: 'Product deleted successfully!', Id: productId });
   } catch (error) {
-    res
-      .status(500)
-      .status(500)
-      .json({ message: 'something want wrong!', error: error.message });
+    next(error);
   }
 };

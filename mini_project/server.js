@@ -12,4 +12,5 @@ try {
   });
 } catch (error) {
   console.log('error while connecting to the database: ', error);
+  process.exit(1);
 }

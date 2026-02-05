@@ -42,7 +42,9 @@ export const getProductById = async (productId) => {
 export const updateProduct = async (productId, data) => {
   const product = await Product.findById(productId);
   if (!product) {
-    throw new Error('product not found');
+    const error = new Error('product not found');
+    error.statusCode = 404;
+    throw error;
   }
   const updatedProduct = await Product.findByIdAndUpdate(
     { _id: productId },

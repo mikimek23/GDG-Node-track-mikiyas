@@ -4,15 +4,23 @@ const orderSchema = new Schema({
   customerName: { type: String, required: true },
   customerEmail: { type: String, required: true, lowercase: true },
   shippingAddress: { type: String, required: true },
-  total: { type: Number, required: true },
   items: [
     {
-      productId: { type: String, ref: 'product', required: true },
+      productId: { type: String, ref: 'cart', required: true },
       name: { type: String, required: true },
-      quantity: { type: Number, required: true },
       price: { type: Number, required: true },
+      quantity: { type: Number, required: true },
+      _id: false,
     },
   ],
-  date: { type: Date, default: Date.now },
+  total: { type: Number, required: true },
+  deliveryDate: {
+    type: Date,
+    default: () => {
+      const date = new Date();
+      date.setMonth(date.getMonth() + 1);
+      return date;
+    },
+  },
 });
 export const Order = mongoose.model('order', orderSchema);
