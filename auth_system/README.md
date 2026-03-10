@@ -34,7 +34,6 @@ ACCESS_TOKEN_SECRET_KEY=
 ```
 
 Notes:
-- `ACCESS_TOKEN_SECRET_KEY` should be a strong, random secret.
 - `PORT` is configurable; `5001` is a common local choice.
 
 3. Start the dev server:
@@ -46,15 +45,15 @@ npm run dev
 The server will start and listen on the configured `PORT`.
 
 ## API
-Base URL: `http://localhost:PORT`
+Base URL: `http://localhost/api/`
 
 ### Auth Routes
-- `POST /api/auth/signup`
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
+- `POST /auth/signup`
+- `POST /auth/login`
+- `POST /auth/logout`
 
 ### User Routes
-- `GET /api/user/dashboard` (requires auth cookie)
+- `GET /user/dashboard` (requires auth cookie)
 
 ## Error Response Format
 Errors are returned as:
